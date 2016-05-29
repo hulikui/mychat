@@ -36,7 +36,7 @@ server = http.createServer(function(req, res){
    switch (path){
     case '/':
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write('<h1>Hello! Try the <a href="/client/index.html">Socket.io Test</a></h1>');
+        res.write('<meta property="qc:admins" content="0170367227633672556470" />   <h1>Hello! Try the <a href="/client/index.html">Socket.io Test</a></h1>');
         res.end();
         break;
     case '/client/index.html':

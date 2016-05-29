@@ -11,7 +11,6 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.5/angular.min.js"></script>
 <link rel="stylesheet" href="http://124.207.24.154/ace/assets/css/ace.css" />
-
 <style type="text/css">
 .show{
 width:50%;
@@ -37,25 +36,41 @@ background:white;
 margin-left:auto;
 margin-right:auto;
 }
+.headimg{
+height:35px;
+width:35px;
+
+}
+.main-content{
+margin-left:auto;
+margin-right:auto;
+}
+ul li{
+min-width:200px;
+}
 </style>
 </head>
 <body class="login-layout blur-login">
+<div class="main-content ">
 <div class="show centera" ng-controller="ctrl">
  <div class="send center">
  <span style="" class="glyphicon glyphicon-pencil"></span>
   <input type="text" ng-model="msg" style="width:50%" placeholder="点击输入文字"></input>
   <button style="margin-left:30px"class="btn btn-warning" ng-click="toggle()"> <span class="glyphicon glyphicon-hand-right"></span> 点击发送</button>
 </div>
- <div class="textarea"> 
+ <div class="textarea "> 
   <ul  class="list-group"  >
-	<li class="list-group-item"  ng-repeat="message in messages track by $index">
+	<li class="list-group-item"   ng-repeat="message in messages track by $index">
 
         <a  href="#">
-   <span class="glyphicon glyphicon-envelope"></span> {{message}}
+   <span class="glyphicon glyphicon-envelope"></span>
+	<span string-html="message"></span>
+
 	<a>
 	</li>
   </ul>
 
+</div>
 </div>
 </div>
 <script type="text/javascript">
@@ -64,10 +79,20 @@ margin-right:auto;
 	var mytime=myDate.toLocaleTimeString(); 
 	console.log(mytime);
 	var username = angular.element('#username');
-	var headurl=angular.element('#headurl')[0].innerText;
+	var headurl=angular.element('#headurl')[0].innerHTML;
+	console.log(angular.element('#headurl')[0].innerHTML);
 	console.log(username[0].innerText);
 	var nickname=username[0].innerText;
 	var app=angular.module('app',[]);
+	app.directive('stringHtml' , function(){
+  	return function(scope , el , attr){
+   	 if(attr.stringHtml){
+     	 scope.$watch(attr.stringHtml , function(html){
+       	 el.html(html || '');//更新html内容
+      });
+    }
+  };
+});
 	//创建控制器
 	app.controller('ctrl',function($scope){
 	var Msgs=[];
@@ -96,7 +121,8 @@ margin-right:auto;
 
 });
 	$scope.toggle=function(){
-	var msg=''+nickname+':'+$scope.msg+'   '+mytime;
+	
+	var msg='<img class="headimg" src="'+headurl+'"/>'+nickname+':'+$scope.msg+'   '+mytime;
 	socket.emit('addMessage',msg);
 }
 });
